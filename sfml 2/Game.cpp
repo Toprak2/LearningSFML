@@ -2,6 +2,7 @@
 
 
 //Private functions
+
 void Game::InitVariables()
 {
 	this->window = nullptr;
@@ -12,12 +13,24 @@ void Game::InitWindow()
 	this->videoMode.height = 600;
 	this->videoMode.width = 800;
 	this->window = new sf::RenderWindow(this->videoMode, "This Is a Window", sf::Style::Titlebar | sf::Style::Close);
+	this->window->setFramerateLimit(60);
+}
+
+void Game::InitEnemies()
+{
+	this->enemy.setPosition(350.f, 250.f);
+	this->enemy.setSize(sf::Vector2f(100.f , 100.f ));
+	this->enemy.setFillColor(sf::Color::Cyan);
+	this->enemy.setOutlineColor(sf::Color::Green);
+	this->enemy.setOutlineThickness(1.f);
 }
 
 //Constructors /Destructor
-Game::Game() {
+Game::Game() 
+{
 	InitVariables();
 	InitWindow();
+	InitEnemies();
 
 }
 
@@ -58,6 +71,16 @@ void Game::update() {
 
 	this->pollEvents();
 	
+
+	//Update mouse position
+	
+	//Relative to the screen
+	//std::cout << "Mouse Position: " << sf::Mouse::getPosition().x << " " << sf::Mouse::getPosition().y << std::endl;
+	
+	//Relative to window
+	std::cout << "Mouse Position: " 
+		<< sf::Mouse::getPosition(*this->window).x << " " 
+		<< sf::Mouse::getPosition(*this->window).y << std::endl;
 }
 
 void Game::render()
@@ -71,10 +94,10 @@ void Game::render()
 		
 		Renders the game objects
 	*/
-	this->window->clear(sf::Color(255, 0, 0, 255));
+	this->window->clear();
 
 	//Draw game objects
-
-	this->window->display();
+	this->window->draw(this->enemy);
+	this->window->display(); 
 
 }
